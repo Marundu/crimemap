@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+  <title>Crimemap</title>
   <head>
-    <script type="text/javascript"
-      src="https://maps.googleapis.com/maps/api/js">
+    
+    <link type="text/css" rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}" />
+    
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAfOfN70sPjy3Jf0-GvE_nCwcT889qOpdQ&callback=initMap" type="text/javascript">
     </script>
 
     <script type="text/javascript">
       var map;
+      var marker;
       function initialize(){
         var mapOptions = {
-          center: new google.maps.LatLng(-0.275498898, 36.102999588),
+          center: new google.maps.LatLng(-1.2643884, 36.74101),
           zoom: 15
         };
         map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
@@ -20,16 +24,44 @@
       }
 
       function placeMarker(location){
-        var marker = new google.maps.Marker({
-          position: location,
-          map: map
+        if (marker){
+          marker.setPosition(location);
+        } else {
+          marker = new google.maps.Marker({
+            position: location,
+            map: map
         });
       }
+      document.getElementById('latitude').value=location.lat();
+      document.getElementById('longitude').value=location.lng();
+    }
     </script>
 
   </head>
   <body onload="initialize()">
-   <div id="map-canvas" style="width:80%;
-     height:500px;"></div>
+  <h1>Crimemap</h1>
+  <p>A map of recent criminal activity in the Mountain View/ Kangemi Dam Area.</p>
+   <div id="map-canvas"></div>
+     
+     <div id="newcrimeform">
+     <h2>Submit new crime</h2>
+     <form action="/submitcrime" method="POST">
+     <label for="category">Category</label>
+     <select name="category" id="category">
+       <option value="mugging">Mugging</option>
+       <option value="breakin">Break-in</option>
+       <option value="assault">Assault</option>
+     </select>
+     <label for="date">Date</label>
+     <input name="date" id="date" type="date">
+     <label for="latitude">Latitude</label>
+     <input name="latitude" id="latitude" type="text">
+     <label for="longitude">Longitude</label>
+     <input name="longitude" id="longitude" type="text">
+     <label for="description">Description</label>
+     <textarea name="description" id="description" placeholder="A brief and detailed description of the crime"></textarea>
+     <input type="submit" value="Submit">
+     </form>
+     </div>
   </body>
 </html>

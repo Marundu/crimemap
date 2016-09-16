@@ -1,0 +1,18 @@
+<style>
+input, select, textarea {
+	line-height: 15px;
+	margin: 2px 6px 16px 0px;
+	width: 100%;
+}
+
+#map-canvas {
+	width: 70%;
+	height: 500px;
+	float: left;
+}
+
+#newcrimeform {
+	float: right;
+	width: 25%;
+}
+</style>
