@@ -2,9 +2,16 @@
 <html lang="en">
   <title>Crimemap</title>
   <head>
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+
+    <!-- CSS Reset -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
     
     <link type="text/css" rel="stylesheet" href="{{url_for('static', filename='css/milligram/dist/milligram.min.css')}}" />
     <link type="text/css" rel="stylesheet" href="{{url_for('static', filename='css/style2.css')}}" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAfOfN70sPjy3Jf0-GvE_nCwcT889qOpdQ&callback=initMap" type="text/javascript">
     </script>
@@ -14,7 +21,7 @@
       var marker;
       function initialize(){
         var mapOptions = {
-          center: new google.maps.LatLng(-1.2643884, 36.74101),
+          center: new google.maps.LatLng(-1.2639045737456047, 36.73707962036133),
           zoom: 15
         };
         map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
@@ -22,8 +29,21 @@
           function(event){
             placeMarker(event.latLng);
           });
+        placeCrimes({{crimes | safe}});
       }
 
+      function placeCrimes(crimes) {
+        for (i=0;i<crimes.length;i++) {
+          crime = new google.maps.Marker( {
+            position: new google.maps.LatLng(crimes[i].latitude, crimes[i].longitude),
+            map: map,
+            title: crimes[i].date + "\n" +
+            crimes[i].category + "\n" + crimes[i].description
+              }
+            );
+          }
+        }
+      
       function placeMarker(location){
         if (marker){
           marker.setPosition(location);
@@ -41,11 +61,11 @@
   </head>
   <body onload="initialize()">
   <h1>Crimemap</h1>
-  <p>A map of recent criminal activity in the Mountain View/ Kangemi Dam Area.</p>
+  <h4 style="text-align:center">A map of recent criminal activity in the Mountain View/ Kangemi Dam Area.</h4>
    <div id="map-canvas"></div>
      
      <div id="newcrimeform">
-     <h2>Submit new crime</h2>
+     <h3>Submit new crime</h3>
      <form action="/submitcrime" method="POST">
      <label for="category">Category</label>
      <select name="category" id="category">
