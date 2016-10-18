@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request
-import dbconfig
 import json
+import dbconfig
 
 if dbconfig.test:
     from mockdbhelper import MockDBHelper as DBHelper
